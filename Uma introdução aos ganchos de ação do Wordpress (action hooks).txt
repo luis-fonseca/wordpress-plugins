@@ -1,0 +1,84 @@
+Uma introdução aos ganchos de ação do Wordpress (action hooks) 
+
+Nos meus estudos sobre desenvolvimento de plugins no Wordpress me deparei com algumas chamadas a determinadas funções como do_action() e add_action(). Procurei algumas informações no Google sobre elas, mas as definições tornaram ainda mais difícil minha compreensão. Graças a um artigo de 2009 tudo ficou claro.
+
+Entender o conceito de como elas funcionam aumentará enormemente suas habilidades de desenvolvimento.
+
+O que são os ganchos de ação do Wordpress?
+
+É fácil de entender, mas difícil de explicar. Basicamente, um gancho de ação é um espaço reservado. Quando um gancho de ação é colocado, ele executará qualquer código "encaixado" a ele.
+
+Veremos alguns ganchos de ação padrão do Wordpress usados na maioria dos temas. É possível encontrar o wp_head e o wp_footer em quase todo tema disponível e a maioria das pessoas não percebe, inclusive eu não sabia, esses ganchos de ação. Esses espaços reservados podem ser usados por plugins para inserir código personalizado no <head> ou rodapé do tema. Com frequência, esses ganchos de ação são usados para inserir código de Analytics ou CSS. Os desenvolvedores criam uma função para gerar o código e a "encaixam" tanto no wp_head or wp_footer.
+
+Se eu fosse resumir tudo em uma sentença seria: Os ganchos de ação do Wordpress são uma forma de permitir aos outros desenvolvedores inserir um código personalizado em locais específicos dentro do código do Wordpress, de forma mudar ou expandir a funcionalidade do sistema.
+
+E porque eles são necessários?
+
+Assim como qualquer outro sistema, o Wordpress evolui. De tempos em tempos uma nova versão é liberada.
+
+Se os ganchos de ação não existissem e fosse necessário mudar ou estender alguma função do Wordpress seria necessário alterar os arquivos principais do sistema. Quando fosse necessário atualizar para uma nova versão haveriam duas escolhas: ou atualizaria o Wordpress ou permaneceria na versão antiga com problemas de segurança e sem as novas funcionalidades.
+
+Porém, ao utilizar os ganchos de ação para modificar como o Wordpress trabalha, é possível fazer a atualização sem perder as suas modificações, pois elas estariam seguras em um arquivo separado e não seriam sobrescritas com a atualização.
+
+Como os ganchos de ação funcionam?
+
+De volta ao exemplo das ações wp_head e wp_footer. Em uma suposição, você quer inserir algum código CSS na seção <head> do seu tema para sobrescrever a cor dos links.
+
+Nota: Não se preocupe com "o que", mas no "como" as coisas são feitas.
+
+Primeiro criamos uma função para inserir o código, pois o gancho de ação somente permite o "encaixe" do nome das funções a eles. O código da função é esse:
+
+function inserir_algum_css() {
+	echo <<<CSS
+		<style type="text/css">
+			h2 {
+				color: red;
+				font-size: 18px;
+			}
+		</style>
+	CSS;
+}
+
+Depois de criarmos a função é hora de "encaixá-la" ao gancho de ação wp_head. Isso é bem fácil:
+
+add_action('wp_head', 'inserir_algum_css');
+
+Em termos leigos, o código acima diz: "Quando ocorrer a ação wp_head no código do tema execute a função inserir_algum_css.".
+
+Meu código final se parecerá assim: 
+
+add_action('wp_head', 'inserir_algum_css');
+
+function inserir_algum_css() {
+	echo <<<CSS
+		<style type="text/css">
+			h2 {
+				color: red;
+				font-size: 18px;
+			}
+		</style>
+	CSS;
+}
+
+Não é um conceito difícil. Os passos necessários são: 
+
+1. Encontrar um gancho de ação para a saída do código;
+2. Criar uma função, e;
+3. Encaixar a função criada no gancho de ação com a função add_action do Wordpress.
+
+Nota: o código precisa estar delimitado pelas tags de abertura e fechamento do PHP ou não funcionará.
+
+Como criar seus próprios ganchos de ação
+
+O Wordpress fornece diversos ganchos de ação para usar. Você também pode permitir alterações no código do seu plugin ou tema sem precisar, necessariamente, alterar o código diretamente.
+
+Então, caso queira fornecer um gancho de ação para executar qualquer função "encaixada" a ela, apenas forneça esse código:
+
+<?php do_action('nome_do_meu_gancho_de_acao'); ?>
+
+O nome "nome_do_meu_gancho_de_acao" deve ser único e descrever o local e/ou propósito do seu gancho de ação.
+
+Dessa forma, qualquer desenvolvedor pode criar e "encaixar" uma função personalizada no gancho de ação recém criado.
+
+Este artigo foi baseado http://www.nathanrice.net/blog/an-introduction-to-wordpress-action-hooks/
+

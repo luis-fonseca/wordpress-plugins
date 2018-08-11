@@ -2,7 +2,7 @@
 
 Os plugins ficam instalados em wp-content/plugins.
 
-NOTA: não usar o bloco de notas para editar arquivos PHP. O motivo é que ele deixa espaços extras que danificam o funcionamento do aplicativo. 
+NOTA: não usar o bloco de notas para editar arquivos PHP, pois, ao salvar, ele deixa espaços extras que danificam o funcionamento do aplicativo. 
 
 Ao criar uma pasta de plugin é necessário ter um arquivo com o mesmo nome, mas com a extensão .php.
 
@@ -24,9 +24,16 @@ Version: 1.6
 Author URI: http://ma.tt/
 */
 
+Essas informações serão exibidas na tela de gerenciamento de plugins.
+
+
 Adicionar um nome item de menu
 
-Para adicionar um novo item de menu é necessário executar uma ação com a função nativa do Wordpress add_action. add_action precisará de dois argumentos: o local onde será executada a ação e a função que deverá ser chamada para adicionar o item de menu.
+Ganchos de ação do Wordpress (action hooks)
+Os ganchos de ação do Wordpress são uma forma de adicionar o código personalizado de outros desenvolvedores em pontos específicos dentro do próprio código do Wordpress de forma a expandí-lo ou personalizá-lo.
+
+Uma action, ou gancho, é uma ação executada após determinado evento, por exemplo, adicionar um novo usuário ou salvar uma publicação.
+Para adicionar um novo item de menu é necessário executar uma ação com a função nativa do Wordpress add_action (gancho). add_action precisará de dois argumentos: o local onde será executada a ação e a função que deverá ser chamada para adicionar o item de menu.
 
 add_action('admin_menu', 'pone_register_menu');
 

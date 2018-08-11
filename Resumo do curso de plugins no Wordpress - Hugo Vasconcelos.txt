@@ -1,0 +1,92 @@
+﻿Como funcionam os plugins do Wordpress
+
+Os plugins ficam instalados em wp-content/plugins.
+
+NOTA: não usar o bloco de notas para editar arquivos PHP. O motivo é que ele deixa espaços extras que danificam o funcionamento do aplicativo. 
+
+Ao criar uma pasta de plugin é necessário ter um arquivo com o mesmo nome, mas com a extensão .php.
+
+- plugin-luis
+  - plugin-luis.php
+  
+Todo plugin deverá conter as seguintes informações de desenvolvimento, por exemplo,
+
+/**
+ * @package Hello_Dolly
+ * @version 1.6
+ */
+/*
+Plugin Name: Hello Dolly
+Plugin URI: http://wordpress.org/plugins/hello-dolly/
+Description: This is not just a plugin, it symbolizes the hope and enthusiasm of an entire generation summed up in two words sung most famously by Louis Armstrong: Hello, Dolly. When activated you will randomly see a lyric from <cite>Hello, Dolly</cite> in the upper right of your admin screen on every page.
+Author: Matt Mullenweg
+Version: 1.6
+Author URI: http://ma.tt/
+*/
+
+Adicionar um nome item de menu
+
+Para adicionar um novo item de menu é necessário executar uma ação com a função nativa do Wordpress add_action. add_action precisará de dois argumentos: o local onde será executada a ação e a função que deverá ser chamada para adicionar o item de menu.
+
+add_action('admin_menu', 'pone_register_menu');
+
+function pone_register_menu() {
+  // a próxima instrução adicionará uma página onde cada argumento definirá argumentos informações:
+  // primeiro argumento, o nome da página
+  // segundo argumento, o nome do item de menu
+  // terceiro argumento, permissão de acesso para administradores
+  // quarto argumento, personalizações da página
+  // quinto argumento, renderiza a página automaticamente
+  add_option_page('Plugin Luís', 'Boas vindas', 'manage_options', 
+    'pone_hello_page', 'pone_render_page');
+    
+  function pone_render_page() {
+  }
+}
+
+É possível, nos argumentos que simbolizam funções, especificar parâmetros adicionais ao criar uma função. Essa função pode existir dentro de outra ou como uma função independente.
+
+function pone_register_menu() {
+  // a próxima instrução adicionará uma página onde cada argumento definirá argumentos informações:
+  // primeiro argumento, o nome da página
+  // segundo argumento, o nome do item de menu
+  // terceiro argumento, permissão de acesso para administradores
+  // quarto argumento, personalizações da página
+  // quinto argumento, renderiza a página automaticamente
+  add_options_page('Plugin Luís', 'Boas vindas', 'manage_options', 
+    'pone_hello_page', 'pone_render_page');
+    
+  function pone_render_page() {
+  }
+}
+
+ou, como recomendável, 
+
+function pone_register_menu() {
+  // a próxima instrução adicionará uma página onde cada argumento definirá argumentos informações:
+  // primeiro argumento, o nome da página
+  // segundo argumento, o nome do item de menu
+  // terceiro argumento, permissão de acesso para administradores
+  // quarto argumento, personalizações da página
+  // quinto argumento, renderiza a página automaticamente
+  add_options_page('Plugin Luís', 'Boas vindas', 'manage_options', 
+    'pone_hello_page', 'pone_render_page');
+}
+
+// função de comando para atualização da página
+function pone_render_page() {
+}
+
+Por fim, o código para geração da página deve ficar dessa forma,
+
+<?php
+function pone_render_page() { ?>
+    <div class="wrap">
+        <h2>Boas vindas!</h2>
+        <div class="description">Esta é a primeira página criada com o plugin.</div>
+    </div>
+<?php } ?>
+
+O código HTML deve ficar de fora do código PHP como especificado pelas tags de fechamento do código PHP, antes do código HTML. Além disso, o PHP fornece algumas classes CSS para manter o padrão entre as páginas como wrap e description.
+
+o banco de dados é curso_plugins

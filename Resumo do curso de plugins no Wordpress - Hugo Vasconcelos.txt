@@ -57,7 +57,7 @@ function pone_register_menu() {
   // a próxima instrução adicionará uma página onde cada argumento definirá argumentos informações:
   // primeiro argumento, o nome da página
   // segundo argumento, o nome do item de menu
-  // terceiro argumento, permissão de acesso para administradores
+  // terceiro argumento, permissão de acesso para administradores. Para mais informações sobre capacidades, https://codex.wordpress.org/pt-br:Pap%C3%A9is_e_Capacidades#Capacidades
   // quarto argumento, personalizações da página
   // quinto argumento, renderiza a página automaticamente
   add_options_page('Plugin Luís', 'Boas vindas', 'manage_options', 
@@ -74,8 +74,8 @@ function pone_register_menu() {
   // primeiro argumento, o nome da página
   // segundo argumento, o nome do item de menu
   // terceiro argumento, permissão de acesso para administradores
-  // quarto argumento, personalizações da página
-  // quinto argumento, renderiza a página automaticamente
+  // quarto argumento, é o slug da página
+  // quinto argumento, chama uma função para a saída da página
   add_options_page('Plugin Luís', 'Boas vindas', 'manage_options', 
     'pone_hello_page', 'pone_render_page');
 }
@@ -96,4 +96,26 @@ function pone_render_page() { ?>
 
 O código HTML deve ficar de fora do código PHP como especificado pelas tags de fechamento do código PHP, antes do código HTML. Além disso, o PHP fornece algumas classes CSS para manter o padrão entre as páginas como wrap e description.
 
-o banco de dados é curso_plugins
+Nota: Para usar esse tutorial criei um banco de dados com o nome 'curso_plugins'.
+
+A função wp_die() finaliza um script e permite a exibição de um conteúdo no formato HTML.
+
+A função wp_options_page é um empacotador (wrapper) para a função add_submenu_page. O novo item será adicionado no menu Configurações (Settings).
+
+A função plugin_dir_path(__FILE__) exibe o diretório de instalação do plugin. É útil para servir de referência para o ponto inicial da aplicação.
+
+Nota: É importante definir um prefixo para o plugin de forma a facilitar a sua identificação das demais funções do Wordpress.
+
+A função trailingslashit() remove a barra de separação de diretório, se houver, e adiciona logo em seguida. É útil para não ter uma barra de separação duplicada.
+
+A função dirname do PHP retorna o diretório de um arquivo.
+
+É importante dividir as funções do plugins em arquivos separados de forma a facilitar o desenvolvimento.
+
+A função plugins_url() traz a URL absoluta de onde os plugins são instalados. Caso o único argumento seja __FILE__, trará a URL absoluta do arquivo referenciado por __FILE__. Caso existam dois argumento, o primeiro um caminho relativo incluindo o nome do arquivo e o segundo __FILE__, a função retornará a URL absoluta desse arquivo.
+
+ do plugin caso especificado __FILE__ como argumento. Caso especificado o primeiro argumento o nome do arquivo, a URL absoluta apontará para ele. Por exemplo,
+
+echo plugins_url(__FILE__); // http://localhost/~replicant/wordpress/plugins/wordpress-hugo-plugins/wp-content/plugins/home/replicant/public_html/wordpress/plugins/wordpress-hugo-plugins/wp-content/plugins/plugin-luis/admin.php
+
+echo plugins_url('images/foo.jpg', __FILE__); // http://localhost/~replicant/wordpress/plugins/wordpress-hugo-plugins/wp-content/plugins/plugin-luis/images/foo.jpg
